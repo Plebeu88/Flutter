@@ -19,7 +19,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.35.7'
+          flutter-version: '3.35.6'
 
       - name: Print Flutter version
         run: flutter --version
@@ -30,14 +30,29 @@ jobs:
       - name: Build APK for arm64 and armeabi-v7a
         run: flutter build apk --release --target-platform android-arm,android-arm64
 
+      - name: Build AAB
+        run: flutter build appbundle --release
+
       - name: Upload libflutter.so for arm64
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: libflutter_so_arm64
           path: build/app/intermediates/flutter/release/arm64-v8a/libflutter.so
 
       - name: Upload libflutter.so for armeabi-v7a
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: libflutter_so_armeabi_v7a
           path: build/app/intermediates/flutter/release/armeabi-v7a/libflutter.so
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Upload AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-aab
+          path: build/app/outputs/bundle/release/app-release.aab
